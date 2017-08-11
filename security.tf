@@ -153,3 +153,8 @@ resource "aws_iam_role_policy" "asg" {
 }
 EOF
 }
+
+resource "aws_iam_instance_profile" "default" {
+  name = "ecs_win-test-ec2profile"
+  role = "${aws_iam_role.ec2.name}"
+}
