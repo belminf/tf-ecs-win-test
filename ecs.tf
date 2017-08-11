@@ -42,7 +42,11 @@ resource "aws_ecs_service" "default" {
   task_definition = "${aws_ecs_task_definition.default.arn}"
   desired_count   = 1
   iam_role        = "${aws_iam_role.ecs.arn}"
-  depends_on      = ["aws_iam_role.ecs"]
+
+  depends_on = [
+    "aws_iam_role.ecs",
+    "aws_alb_listener.default",
+  ]
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.default.arn}"
