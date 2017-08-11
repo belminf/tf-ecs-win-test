@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "default" {
     "memory": 500,
     "portMappings" : [{"ContainerPort": 80}],
     "entryPoint": ["powershell"],
-    "command": ["New-Item -Path C:\\inetpub\\wwwroot\\index.html -Type file -Value '<html><head><title>Hello world!</title><body>You see me? Nice!; C:\\ServiceMonitor.exe w3svc"],
+    "command": ["New-Item -Path C:\\inetpub\\wwwroot\\index.html -Type file -Value '<html><head><title>Hello world!</title><body>You see me? Nice!'; C:\\ServiceMonitor.exe w3svc"],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
