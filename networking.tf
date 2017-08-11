@@ -45,3 +45,25 @@ resource "aws_subnet" "subnet2" {
     Project = "ecs-win-test"
   }
 }
+
+resource "aws_security_group" "default" {
+  name        = "ecs-win-test"
+  vpc_id      = "${aws_vpc.default.id}"
+  tags = {
+    Project = "ecs-win-test"
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
