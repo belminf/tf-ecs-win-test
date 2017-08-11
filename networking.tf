@@ -45,5 +45,3 @@ resource "aws_subnet" "subnet2" {
     Project = "ecs-win-test"
   }
 }
-
-
