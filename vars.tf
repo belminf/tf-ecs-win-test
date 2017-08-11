@@ -4,8 +4,8 @@ variable "desired_capacity" {
 }
 
 variable "min_size" {
-  type = "string"
-  default = 1
+  type        = "string"
+  default     = 1
   description = "ASG min size"
 }
 
