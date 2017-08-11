@@ -9,7 +9,7 @@ resource "aws_launch_configuration" "default" {
   user_data = <<EOF
 <powershell>
   # Set agent env variables for the Machine context (durable)  
-  [Environment]::SetEnvironmentVariable("ECS_CLUSTER", "", "${aws_ecs_cluster.default.name}")
+  [Environment]::SetEnvironmentVariable("ECS_CLUSTER", "${aws_ecs_cluster.default.name}", "MACHINE")
   $agentVersion = 'v1.14.3';
   $agentZipUri = "https://s3.amazonaws.com/amazon-ecs-agent/ecs-agent-windows-$agentVersion.zip";
   $agentZipMD5Uri = "$agentZipUri.md5";
