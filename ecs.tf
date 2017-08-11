@@ -43,9 +43,10 @@ resource "aws_ecs_service" "default" {
   desired_count   = 1
   iam_role        = "${aws_iam_role.ecs.arn}"
   depends_on      = ["aws_iam_role.ecs"]
-load_balancer {
+
+  load_balancer {
     target_group_arn = "${aws_alb_target_group.default.arn}"
-    container_name = "ecs-win-test"
-    container_port = 80
-}
+    container_name   = "ecs-win-test"
+    container_port   = 80
+  }
 }

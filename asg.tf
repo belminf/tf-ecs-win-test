@@ -53,7 +53,7 @@ EOF
 }
 
 resource "aws_autoscaling_group" "default" {
-  vpc_zone_identifier = ["${aws_subnet.subnet1.id}", "${aws_subnet.subnet2.id}"]
+  vpc_zone_identifier  = ["${aws_subnet.subnet1.id}", "${aws_subnet.subnet2.id}"]
   launch_configuration = "${aws_launch_configuration.default.name}"
   max_size             = "${var.max_size}"
   min_size             = "${var.min_size}"
