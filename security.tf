@@ -114,3 +114,42 @@ resource "aws_iam_role_policy" "ec2" {
 }
 EOF
 }
+
+resource "aws_iam_role" "asg" {
+  name = "ecs-win-test-asgrole"
+  path = "/"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow", 
+    "Action": "sts:AssumeRole",
+    "Principal": {
+      "Service": "application-autoscaling.amazonaws.com"
+    }
+  }]
+} 
+EOF
+}
+
+resource "aws_iam_role_policy" "asg" {
+  name = "ecs-win-test-asgpolicy"
+  role = "${aws_iam_role.asg.id}"
+
+  policy = <<EOF
+{
+  "Statement": [{
+    "Effect": "Allow", 
+    "Action": [
+      "application-autoscaling:*",
+      "cloudwatch:DescribeAlarms",
+      "cloudwatch:PutMetricAlarm",
+      "ecs:DescribeServices", 
+      "ecs:UpdateService"
+    ], 
+    "Resource": "*"
+  }] 
+}
+EOF
+}
