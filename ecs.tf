@@ -1,8 +1,8 @@
-resource "aws_ecs_cluster" "cluster" {
+resource "aws_ecs_cluster" "default" {
   name = "ecs-win-test-cluster"
 }
 
-resource "aws_cloudwatch_log_group" "loggroup" {
+resource "aws_cloudwatch_log_group" "default" {
   name              = "ecs-win-test-log"
   retention_in_days = 3
 
@@ -11,7 +11,7 @@ resource "aws_cloudwatch_log_group" "loggroup" {
   }
 }
 
-resource "aws_ecs_task_definition" "taskdef" {
+resource "aws_ecs_task_definition" "default" {
   family = "ecs-win-test-tasks"
 
   container_definitions = <<EOF
@@ -27,11 +27,25 @@ resource "aws_ecs_task_definition" "taskdef" {
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${aws_cloudwatch_log_group.loggroup.name}",
+        "awslogs-group": "${aws_cloudwatch_log_group.default.name}",
         "awslogs-stream-prefix": "ecs-win-test-stream",
         "awslogs-region": "${var.region}"
       }
     }
 }]
 EOF
+}
+
+resource "aws_ecs_service" "default" {
+  name            = "ecs-win-test"
+  cluster         = "${aws_ecs_cluster.default.id}"
+  task_definition = "${aws_ecs_task_definition.default.arn}"
+  desired_count   = 1
+  iam_role        = "${aws_iam_role.ecs.arn}"
+  depends_on      = ["aws_iam_role.ecs"]
+load_balancer {
+    target_group_arn = "${aws_alb_target_group.default.arn}"
+    container_name = "ecs-win-test"
+    container_port = 80
+}
 }
