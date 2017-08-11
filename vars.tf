@@ -3,6 +3,12 @@ variable "desired_capacity" {
   description = "ASG desired capacity"
 }
 
+variable "min_size" {
+  type = "string"
+  default = 1
+  description = "ASG min size"
+}
+
 variable "max_size" {
   type        = "string"
   description = "ASG max size"
