@@ -31,7 +31,7 @@ resource "aws_security_group" "default" {
   }
 }
 
-resource "aws_iam_role" "default" {
+resource "aws_iam_role" "ecs" {
   name = "ecs-win-test-ecsrole"
   path = "/"
 
@@ -49,9 +49,9 @@ resource "aws_iam_role" "default" {
 EOF
 }
 
-resource "aws_iam_role_policy" "default" {
+resource "aws_iam_role_policy" "ecs" {
   name = "ecs-win-test-ecspolicy"
-  role = "${aws_iam_role.default.id}"
+  role = "${aws_iam_role.ecs.id}"
 
   policy = <<EOF
 {
