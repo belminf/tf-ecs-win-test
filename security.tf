@@ -71,3 +71,46 @@ resource "aws_iam_role_policy" "ecs" {
 }
 EOF
 }
+
+resource "aws_iam_role" "ec2" {
+  name = "ecs-win-test-ec2role"
+  path = "/"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow", 
+    "Action": "sts:AssumeRole",
+    "Principal": {
+      "Service": "ec2.amazonaws.com"
+    }
+  }]
+} 
+EOF
+}
+
+resource "aws_iam_role_policy" "ec2" {
+  name = "ecs-win-test-ec2policy"
+  role = "${aws_iam_role.ec2.id}"
+
+  policy = <<EOF
+{
+  "Statement": [{
+    "Effect": "Allow", 
+    "Action": [
+      "ecs:CreateCluster", 
+      "ecs:DeregisterContainerInstance", 
+      "ecs:DiscoverPollEndpoint", 
+      "ecs:Poll", 
+      "ecs:RegisterContainerInstance", 
+      "ecs:StartTelemetrySession", 
+      "ecs:Submit*", 
+      "logs:CreateLogStream", 
+      "logs:PutLogEvents"
+    ], 
+    "Resource": "*"
+  }] 
+}
+EOF
+}
