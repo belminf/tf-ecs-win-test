@@ -30,3 +30,44 @@ resource "aws_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+resource "aws_iam_role" "default" {
+  name = "ecs-win-test-ecsrole"
+  path = "/"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow", 
+    "Action": "sts:AssumeRole",
+    "Principal": {
+      "Service": "ecs.amazonaws.com"
+    }
+  }]
+} 
+EOF
+}
+
+resource "aws_iam_role_policy" "default" {
+  name = "ecs-win-test-ecspolicy"
+  role = "${aws_iam_role.default.id}"
+
+  policy = <<EOF
+{
+  "Statement": [{
+    "Effect": "Allow", 
+    "Action": [
+      "elasticloadbalancing:DeregisterInstancesFromLoadBalancer", 
+      "elasticloadbalancing:DeregisterTargets", 
+      "elasticloadbalancing:Describe*", 
+      "elasticloadbalancing:RegisterInstancesWithLoadBalancer", 
+      "elasticloadbalancing:RegisterTargets", 
+      "ec2:Describe*", 
+      "ec2:AuthorizeSecurityGroupIngress"
+    ], 
+    "Resource": "*"
+  }] 
+}
+EOF
+}
